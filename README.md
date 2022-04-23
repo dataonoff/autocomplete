@@ -1,6 +1,69 @@
-# Getting Started with Create React App
+# React autocomplete skill test
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Deliverable
+
+A react textarea component that has a Discord-like users and channels autocomplete + formatting
+
+## Specs
+
+- Search for a user and a channel as displayed in the sketch
+- Store users and channels badges as `<#{channel_id}>` and `<&{user_id}>` on the underlying textarea value
+- Ability to browse options using arrow keys + ability to select an option by pressing on the RETURN key
+- Pressing ESC or SPACE should collapse the autocomplete popup
+- Surrounding a text by ** and ** should display the text in bold
+
+For any edgecases that aren't visible on the sketch file, please follow the Discord implementation.
+
+## Data to play with
+
+```json
+{
+  "channels": [
+    {
+      "id": "611014873639550999",
+      "name": "présentations"
+    },
+    {
+      "id": "571286115739238410",
+      "name": "dev-test"
+    },
+    {
+      "id": "675919773607002148",
+      "name": "dev-room"
+    },
+    {
+      "id": "572532173056507905",
+      "name": "streams-announcements"
+    },
+    {
+      "id": "656504373290991643",
+      "name": "party"
+    }
+  ],
+  "users": [
+    {
+      "id": "258258856189231104",
+      "username": "Brendan",
+      "discriminator": "1234"
+    },
+    {
+      "id": "138362511190786048",
+      "username": "Brendon",
+      "discriminator": "4321"
+    },
+    {
+      "id": "103559217914318848",
+      "username": "JohnL",
+      "discriminator": "3234"
+    },
+    {
+      "id": "759336655478849578",
+      "username": "JohnD",
+      "discriminator": "4322"
+    }
+  ]
+}
+```
 
 ## Available Scripts
 
@@ -26,21 +89,3 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
