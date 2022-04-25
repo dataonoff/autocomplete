@@ -3,48 +3,9 @@ import styled from 'styled-components';
 import { data } from '../../api/data';
 import { filter } from 'lodash';
 import React from 'react';
-import avatarImg from '../../assets/psyko.png'
-import FlexBox from '../FlexBox';
 import { getCaretPosition, getCurrentNode, getInnerHtmlPosition, setCaretPosition } from '../../utils/helpers';
-
-
-interface IListBoxProps {
-  suggestiontype: string;
-  usersMention: IUserMention[];
-  channelsMention: IChannelMention[];
-  searchedMention: string;
-  setSelectedMention: React.Dispatch<React.SetStateAction<ISelectedMentionProps>>;
-  cursor: number;
-  setCursor: React.Dispatch<React.SetStateAction<number>>;
-};
-
-interface ISelectedMentionProps {
-  suggestiontype: string;
-  name: string;
-  id: string;
-};
-
-interface IUserMention {
-  id: string;
-  username: string;
-  discriminator: string;
-};
-
-interface IChannelMention {
-  id: string;
-  name: string;
-};
-
-interface IAutocompleteRow {
-  name: string;
-  suggestiontype: string;
-  discriminator?: string;
-  id: string;
-  index: number;
-  setSelectedMention: React.Dispatch<React.SetStateAction<ISelectedMentionProps>>;
-  cursor: number;
-  setCursor: React.Dispatch<React.SetStateAction<number>>;
-};
+import { IChannelMention, ISelectedMentionProps, IUserMention } from './types';
+import { ListBox } from './ListBox';
 
 
 const AutocompleteBox = styled.div`
@@ -52,13 +13,6 @@ position: relative;
 width: 100%;
 text-indent: 0;
 width: 502px;
-`;
-
-export const AvatarImg = styled.img`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-right: 10px;
 `;
 
 const StyledTextArea = styled.div`
@@ -75,85 +29,6 @@ padding: 10px;
 white-space: break-spaces!important;
 `;
 
-const ScrollBox = styled.div`
-overflow: hidden scroll;
-max-height: 490px;
-padding-right: 0px;
-border-radius: 5px;
-color: ${({ theme }): string => theme.colors.text};
-`;
-
-const MentionTitle = styled.div`
-    border-radius: 3px;
-    padding: 8px;
-    text-transform: uppercase;
-    font-weight: 600;
-`;
-
-const AutocompleteRow = styled((props: IAutocompleteRow) => (
-  <FlexBox
-    justifyContent='space-between'
-    onClick={() => props.setSelectedMention({ suggestiontype: props.suggestiontype, id: props.id, name: props.name })}
-    onMouseOver={() => props.setCursor(props.index)}
-    className={props.cursor === props.index ? 'active' : ''}
-    {...props}
-  >
-    <FlexBox>
-      {props.suggestiontype === 'users' ? <AvatarImg src={avatarImg} alt='avtr' /> : <div>#&nbsp;</div>}
-      <div>{props.name}</div>
-    </FlexBox>
-    <div>{props.suggestiontype === 'users' && <span>{props.name}#{props.discriminator}</span>}</div>
-  </FlexBox>
-))`
-  padding: 8px;
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  :hover {
-    background-color: #36393f;
-  }
-  background-color:${(props): string => (props.cursor === props.index ? '#36393f' : 'inherit')};
-`;
-
-const ListBox = styled((props: IListBoxProps) => (
-  <div {...props} >
-    <ScrollBox>
-      <MentionTitle>{props.suggestiontype === 'users' ?
-        'Members corresponding to @' + props.searchedMention :
-        'Channels corresponding to #' + props.searchedMention}</MentionTitle>
-      {props.usersMention.map((user, i) => (
-        <AutocompleteRow
-          key={user.id}
-          index={i}
-          cursor={props.cursor}
-          setCursor={props.setCursor}
-          name={user.username}
-          suggestiontype={props.suggestiontype}
-          discriminator={user.discriminator}
-          id={user.id}
-          setSelectedMention={props.setSelectedMention} />
-      ))}
-      {props.channelsMention.map((channel, i) => (
-        <AutocompleteRow
-          key={channel.id}
-          index={i}
-          cursor={props.cursor}
-          setCursor={props.setCursor}
-          name={channel.name}
-          suggestiontype={props.suggestiontype}
-          id={channel.id}
-          setSelectedMention={props.setSelectedMention} />
-      ))}
-    </ScrollBox>
-  </div>
-))`
-background-color: ${({ theme }): string => theme.colors.autoComplete};
-position: absolute;
-left: 0;
-right: 0;
-bottom: calc(100% + 8px);
-`;
 
 const AutocompleteTextArea: React.FC = (() => {
   const [addedMentionNumber, setAddedMentionNumber] = useState<number>(1);
@@ -181,6 +56,7 @@ const AutocompleteTextArea: React.FC = (() => {
         let currentInnerHtml = myContainer?.current?.innerHTML;
         // first remove the searchedMention from currentInnerHtml
         currentInnerHtml = currentInnerHtml.substr(0, caretinnerHtmlPosition - (searchedMention.length + 1)) + currentInnerHtml.substr(caretinnerHtmlPosition);
+        // Then add the newMention to the all innerHtml string
         const editCut = [currentInnerHtml.slice(0, caretinnerHtmlPosition - (searchedMention.length + 1)), newMention + currentInnerHtml.slice(caretinnerHtmlPosition - (searchedMention.length + 1))].join('');
         setAddMention(editCut);
         setUsersMatchingMention([]);
@@ -190,6 +66,7 @@ const AutocompleteTextArea: React.FC = (() => {
         let currentInnerHtml = myContainer?.current?.innerHTML;
         // first remove the searchedMention from currentInnerHtml
         currentInnerHtml = currentInnerHtml.substr(0, caretinnerHtmlPosition - (searchedMention.length + 1)) + currentInnerHtml.substr(caretinnerHtmlPosition);
+        // Then add the newMention to the all innerHtml string
         const editCut = [currentInnerHtml.slice(0, caretinnerHtmlPosition - (searchedMention.length + 1)), newMention + currentInnerHtml.slice(caretinnerHtmlPosition - (searchedMention.length + 1))].join('');
         setAddMention(editCut);
         setChannelsMatchingMention([]);
@@ -306,7 +183,8 @@ const AutocompleteTextArea: React.FC = (() => {
 
   return (
     <AutocompleteBox>
-      {(usersMatchingMention.length > 0 || channelsMatchingMention.length > 0) && <ListBox
+      {(usersMatchingMention.length > 0 || channelsMatchingMention.length > 0) && 
+      <ListBox
         cursor={cursor}
         setCursor={setCursor}
         suggestiontype={suggestionType}
