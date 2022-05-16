@@ -1,13 +1,14 @@
 import React from 'react';
 import { FlexBox, AutocompleteTextArea } from './components';
-import logo from './logo.svg';
+import { Container, SubContainer } from './components/Container/Container';
 
 function App() {
   return (
-    <FlexBox justifyContent='center' flexDirection='column' alignItems='center' mt={20}>
-      <img src={logo} className="App-logo" alt="logo" />
-        <AutocompleteTextArea />    
-    </FlexBox>
+    <Container>
+      <SubContainer>
+          <AutocompleteTextArea />
+      </SubContainer>
+    </Container>
   );
 }
 

@@ -36,7 +36,6 @@ export const getCaretPosition = (element: any) => {
 export const setCaretPosition = (element: HTMLElement, position: number) => {
     const range = document.createRange()
     const sel = window.getSelection()
-    console.log(element.childNodes);
     if (element.childNodes[position]) {
         range.setStart(element.childNodes[position], 1)
         range.collapse(true)

@@ -9,24 +9,36 @@ import { ListBox } from './ListBox';
 
 
 const AutocompleteBox = styled.div`
-position: relative;
-width: 100%;
-text-indent: 0;
-width: 502px;
+  position: relative;
+  width: 100%;
+  text-indent: 0;
 `;
 
 const StyledTextArea = styled.div`
-background-color: ${({ theme }): string => theme.colors.inputBg};
-border-radius: ${({ theme }): string => theme.borderRadius};
-width: 480px;
-height: 125px;
-resize: none;
-color: ${({ theme }): string => theme.colors.text};
-:focus{
-  outline: 0;
-}
-padding: 10px;
-white-space: break-spaces!important;
+  border-radius: ${({ theme }): string => theme.borderRadius};
+  background: ${({ theme }): string => theme.colors.autoCompleteBg};
+  min-height: 72px;
+  max-height: 50vh;
+  color: ${({ theme }): string => theme.colors.text};
+  font: normal normal normal 20px/26px Roboto;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 1px solid #1F2129;
+  :focus{
+    outline: 0;
+  }
+  padding: 23px 24px;
+  white-space: break-spaces!important;
+  .user-tag {
+    border-radius: 2px;
+    padding: 8px;
+    height: 42px;
+    font: normal normal medium 20px/26px Roboto;
+    letter-spacing: 0px;
+    color: #CBE9FF;
+    box-shadow: 0px 3px 6px #00000029;
+    background: ${({ theme }): string => theme.colors.mentionBg};
+    color: white;
+  }
 `;
 
 
@@ -48,7 +60,6 @@ const AutocompleteTextArea: React.FC = (() => {
   const myContainer = React.useRef<any>(null);
 
   React.useEffect(() => {
-    // console.log(apiValue);
     if (selectedMention.id) {
       const isCaretPositionAtEnd = myContainer?.current?.innerText.length === caretPosition;
       if (selectedMention.suggestiontype === 'users') {

@@ -4,34 +4,36 @@ import { IAutocompleteRow } from "./types";
 import avatarImg from '../../assets/psyko.png'
 
 const AvatarImg = styled.img`
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 8px;
 `;
 
-export const AutocompleteRow = styled((props: IAutocompleteRow) => (
+export const AutocompleteRow = styled(({setSelectedMention, suggestiontype, id, name, index, ...props}: IAutocompleteRow) => (
     <FlexBox
       justifyContent='space-between'
-      onClick={() => props.setSelectedMention({ suggestiontype: props.suggestiontype, id: props.id, name: props.name })}
-      onMouseOver={() => props.setCursor(props.index)}
-      className={props.cursor === props.index ? 'active' : ''}
+      onClick={() => setSelectedMention({ suggestiontype: suggestiontype, id: id, name: name })}
+      onMouseOver={() => props.setCursor(index)}
       {...props}
     >
-      <FlexBox>
-        {props.suggestiontype === 'users' ? <AvatarImg src={avatarImg} alt='avtr' /> : <div>#&nbsp;</div>}
-        <div>{props.name}</div>
+      <FlexBox alignItems="center">
+        {suggestiontype === 'users' ? <AvatarImg src={avatarImg} alt='avtr' /> : <div>#&nbsp;</div>}
+        <div>{name}</div>
       </FlexBox>
-      <div>{props.suggestiontype === 'users' && <span>{props.name}#{props.discriminator}</span>}</div>
+      <div>{suggestiontype === 'users' && <span>{name}#{props.discriminator}</span>}</div>
     </FlexBox>
   ))`
-    padding: 8px;
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 500;
+    height: 48px;
+    padding: 8px 24px;
+    text-align: left;
+    font: normal normal normal 20px/26px Roboto;
+    letter-spacing: 0px;
+    color: #EAEAEA;
     cursor: pointer;
     :hover {
-      background-color: #36393f;
+      background-color: ${(props): string => props.theme.colors.listBoxItemBg};
     }
-    background-color:${(props): string => (props.cursor === props.index ? '#36393f' : 'inherit')};
+    background:${(props): string => (props.cursor === props.index ? props.theme.colors.listBoxItemBg : 'inherit')};
+    border-radius: ${({ theme }): string => theme.borderRadius};
   `;

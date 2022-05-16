@@ -25,9 +25,13 @@ declare module 'styled-components' {
     spacing: Spacing;
     colors: {
       background: string;
+      subBackground: string;
       text: string;
       inputBg: string;
-      autoComplete: string;
+      autoCompleteBg: string;
+      listBoxItemBg: string;
+      mentionBg: string;
+      listBoxBg: string;
     };
   }
 }

@@ -1,23 +1,26 @@
 import { createGlobalStyle } from 'styled-components/macro';
 
 const GlobalStyle = createGlobalStyle`
+@font-face {
+  font-family: 'Roboto', sans-serif;
+}
     html, 
     body {
        height: 100%;
        width: 100%;
+       margin: 0;
   }
-  body {
-    background: ${({ theme }): string => theme.colors.background};
+  #root {
+    height: 100%;
   }
+  * {
+  box-sizing: border-box;
+}
   .App-logo {
     height: 20vmin;
     pointer-events: none;
     margin-top: 40px;
     margin-bottom: 100px;
-  }
-  .user-tag {
-    background-color: #007ac5;
-    color: white;
   }
   @media (prefers-reduced-motion: no-preference) {
     .App-logo {

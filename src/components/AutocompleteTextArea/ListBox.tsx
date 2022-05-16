@@ -3,55 +3,61 @@ import { AutocompleteRow } from "./AutocompleteRow";
 import { IListBoxProps } from "./types";
 
 const ScrollBox = styled.div`
-overflow: hidden scroll;
-max-height: 490px;
-padding-right: 0px;
-border-radius: 5px;
-color: ${({ theme }): string => theme.colors.text};
+  overflow: hidden scroll;
+  max-height: 490px;
+  padding-right: 0px;
+  border-radius: 5px;
+  color: ${({ theme }): string => theme.colors.text};
 `;
 
 const MentionTitle = styled.div`
-    border-radius: 3px;
-    padding: 8px;
-    text-transform: uppercase;
-    font-weight: 600;
+  text-align: left;
+  font: normal normal bold 20px/52px Roboto;
+  letter-spacing: 0.96px;
+  color: #FFFFFF;
+  text-transform: uppercase;
 `;
 
-export const ListBox = styled((props: IListBoxProps) => (
+export const ListBox = styled(({ suggestiontype, searchedMention, usersMention, cursor, setCursor, setSelectedMention, channelsMention, ...props }: IListBoxProps) => (
   <div {...props} >
     <ScrollBox>
-      <MentionTitle>{props.suggestiontype === 'users' ?
-        'Members corresponding to @' + props.searchedMention :
-        'Channels corresponding to #' + props.searchedMention}</MentionTitle>
-      {props.usersMention.map((user, i) => (
+      <MentionTitle>{suggestiontype === 'users' ?
+        'Members corresponding to @' + searchedMention :
+        'Channels corresponding to #' + searchedMention}
+      </MentionTitle>
+      {usersMention.map((user, i) => (
         <AutocompleteRow
           key={user.id}
           index={i}
-          cursor={props.cursor}
-          setCursor={props.setCursor}
+          cursor={cursor}
+          setCursor={setCursor}
           name={user.username}
-          suggestiontype={props.suggestiontype}
+          suggestiontype={suggestiontype}
           discriminator={user.discriminator}
           id={user.id}
-          setSelectedMention={props.setSelectedMention} />
+          setSelectedMention={setSelectedMention} />
       ))}
-      {props.channelsMention.map((channel, i) => (
+      {channelsMention.map((channel, i) => (
         <AutocompleteRow
           key={channel.id}
           index={i}
-          cursor={props.cursor}
-          setCursor={props.setCursor}
+          cursor={cursor}
+          setCursor={setCursor}
           name={channel.name}
-          suggestiontype={props.suggestiontype}
+          suggestiontype={suggestiontype}
           id={channel.id}
-          setSelectedMention={props.setSelectedMention} />
+          setSelectedMention={setSelectedMention} />
       ))}
     </ScrollBox>
   </div>
 ))`
-background-color: ${({ theme }): string => theme.colors.autoComplete};
-position: absolute;
-left: 0;
-right: 0;
-bottom: calc(100% + 8px);
+  background: ${({ theme }): string => theme.colors.listBoxBg};
+  border: 1px solid #373A46;
+  border-radius: ${({ theme }): string => theme.borderRadius};
+  height: 360px;
+  padding: 24px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 16px);
 `;
